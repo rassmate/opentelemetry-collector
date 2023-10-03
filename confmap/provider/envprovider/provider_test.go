@@ -51,6 +51,15 @@ func TestInvalidYAML(t *testing.T) {
 	assert.NoError(t, env.Shutdown(context.Background()))
 }
 
+func TestNumericString(t *testing.T) {
+	const envName = "string-starting-with-zero"
+	t.Setenv(envName, "012345")
+	env := New()
+	value, _ := env.Retrieve(context.Background(), envSchemePrefix+envName, nil)
+	assert.Equal(t, "012345", value)
+	assert.NoError(t, env.Shutdown(context.Background()))
+}
+
 func TestEnv(t *testing.T) {
 	const envName = "default-config"
 	t.Setenv(envName, validYAML)
